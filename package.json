@@ -1,0 +1,18 @@
+{
+  "name": "desafio-evaluado-22-abracadabra",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "server": "node index.js",
+    "server-watch": "node --watch index.js",
+    "server-nodemon": "nodemon index.js",
+    "start": "nodemon --watch index.js"
+  },
+  "keywords": [],
+  "author": "jonathan viera",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.3"
+  },
+  "description": ""
+}
