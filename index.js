@@ -1,37 +1,36 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000; 
+const port = process.env.PORT || 3001;
+const exphbs = require("express-handlebars");
 
-app.use(express.static('assets')); 
+app.engine(".hbs", exphbs.engine({ extname: ".hbs" }));
+app.set("view engine", ".hbs");
+app.set("views", "./views");
+app.use(express.static('public'));
+app.use("/bootstrap_css",express.static('./node_modules/bootstrap/dist/css'));
+app.use("/bootstrap_js",express.static('./node_modules/bootstrap/dist/js'));
+app.use("/jquery",express.static('./node_modules/jquery/dist'));
 
-const usuarios = ['Juan', 'Jocelyn', 'Astrid', 'Maria', "Ignacia", "Javier", "Brian"]; 
+// Paso 3
+app.get("/:color?", function (req, res) {
+    // Paso 4
+    const { color } = req.params;
+    // Paso 5
+    res.render("home", {
+     colores: [
+    "primary",
+    "secondary",
+    "success",
+    "danger",
+    "warning",
+    "info",
+    "light",
+    "dark",
+    ],
+    color: color,
+    });
+    });
 
-app.get('/', (req, res) => { 
-  res.send('⭐⭐⭐⭐⭐🎉¡Bienvenido a la página de inicio!🎉⭐⭐⭐⭐⭐');
-});
-app.get('/abracadabra/usuarios', (req, res) => {
-  res.json({ usuarios });
-});
-app.use('/abracadabra/juego/:usuario', (req, res, next) => {
-  const usuario_ruta = req.params.usuario 
-  const isUser = usuarios.map((u) => u.toLowerCase()).includes(usuario_ruta.toLowerCase()); 
-  isUser ? next() : res.sendFile(__dirname + "/assets/img/who.jpeg");     
-  }); 
-app.get('/abracadabra/juego/:usuario', (req, res) => { 
-  res.sendFile(__dirname + '/index.html')             
-});    
-app.get('/abracadabra/conejo/:n', (req, res) => { 
-  const n = req.params.n 
-  const numero = Math.floor(Math.random() * (5 - 1)) + 1; 
-  if (n == numero) {
-      res.sendFile(__dirname + '/assets/img/conejito.jpg'); 
-  } else {
-    res.sendFile(__dirname + '/assets/img/voldemort.jpg'); 
-  }
-});  
-app.get('*', (req, res) => {
-  res.send("<center><h1>🤣🤣🤣🤣🤣Esta página no existe...🤣🤣🤣🤣🤣 </h1></center>");
-});
 app.listen(port, () => {
-  console.log(`🔥🔥🔥🔥🔥Servidor corriendo en el puerto🔥🔥🔥🔥🔥http://localhost:${port}`);
+    console.log(`🔥🔥🔥🔥🔥Servidor corriendo en el puerto🔥🔥🔥🔥🔥http://localhost:${port}`);
 });
